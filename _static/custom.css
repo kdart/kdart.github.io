@@ -1,0 +1,22 @@
+article {
+    background:#000000 url(bg-header.png) repeat-x scroll 0 0;
+}
+
+article h1 {
+    color: royalblue;
+}
+
+article h2 {
+    color: lightcoral;
+    padding-bottom: 44px;
+}
+
+article h3 {
+    color: lightcoral;
+    padding-bottom: 44px;
+}
+
+article h4 {
+    color: lightcoral;
+}
+

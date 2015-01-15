@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Pycopia 3 Update &mdash; Pycopia 3 2015.01.07 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="_static/single.css" type="text/css" />
+    
+    <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+    
+
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '2015.01.07',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/common.js"></script>
+    <script type="text/javascript" src="_static/slides.js"></script>
+    <script type="text/javascript" src="_static/sync.js"></script>
+    <script type="text/javascript" src="_static/controller.js"></script>
+    <script type="text/javascript" src="_static/init.js"></script>
+    
+    <link rel="top" title="Pycopia 3 2015.01.07 documentation" href="#" /> 
+  </head>
+  <body>
+
+<section
+   id="slide_container"
+   class='slides layout-regular'>
+
+
+  <article class="slide level-1" id="pycopia-3-update">
+<h1>Pycopia 3 Update</h1>
+<img alt="_images/cornucopia.jpg" class="align-center" src="_images/cornucopia.jpg" />
+
+</article>
+<article class="slide level-2" id="motivation">
+<h2>Motivation</h2>
+<ul class="simple">
+<li>Refresh to newer Python 3 language.</li>
+<li>Leverage newer third-party modules.</li>
+<li>Original design somewhat ad-hoc:<ul>
+<li>Concepts added over time.</li>
+<li>Some features never actually used.</li>
+<li>Had to extend Python in some areas.</li>
+</ul>
+</li>
+<li>Python now has more and better standard modules.<ul>
+<li>Can now use more standard modules.</li>
+<li>More maintainable.</li>
+</ul>
+</li>
+<li>Opportunity for cleaning up the code
+(As with Python 3 itself)</li>
+</ul>
+
+</article>
+<article class="slide level-3" id="python-3">
+<h3>Python 3</h3>
+<ul class="simple">
+<li>Python 3 is the future of Python:<ul>
+<li>Better text/unicode and data separation.</li>
+<li>More built-in language features<ul>
+<li>Better memory management.</li>
+<li>Function annotations, non-local variables.</li>
+<li><em>yield from</em>, Exception chaining, print function, enums</li>
+</ul>
+</li>
+<li>Unified IO model.</li>
+<li>Standardized asynchronous IO.</li>
+<li>Active development.</li>
+</ul>
+</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="major-qa-framework-features">
+<h2>Major QA Framework Features</h2>
+<ul class="simple">
+<li>Intended to support the entire gamut of QA activities.</li>
+</ul>
+<ul class="build">
+<li><p class="first">Collection of modules to support writing test cases.</p>
+</li>
+<li><p class="first">Collection of modules to support writing tools.</p>
+</li>
+<li><p class="first">Means to run test cases in flexible ways.</p>
+</li>
+<li><p class="first">Means to report test case results that are accurate.</p>
+</li>
+<li><p class="first">Means to manage test cases.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Test coverage</li>
+<li>Maintenance and obsolecense.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Manage lab assets.</p>
+</li>
+</ul>
+
+</article>
+<article class="slide level-3" id="features-cont">
+<h3>Features (cont)</h3>
+<ul class="simple">
+<li>Easy to write test cases; low overhead, limited boilerplate.</li>
+<li>Accurate, reliable results.</li>
+</ul>
+<ul class="build simple">
+<li>No false positives.</li>
+<li>No false negatives.</li>
+<li><strong>PASSED</strong> really means passed, <strong>FAIL</strong> really means fail.</li>
+<li>Dynamic test suite construction (adjusts to configuration).</li>
+<li>Flexible test invocation: automated or manual.</li>
+<li>Mix automated and manual tests.</li>
+<li>Automated test permutations.</li>
+<li>Global, per-test, and per-user configuration.</li>
+</ul>
+
+</article>
+<article class="slide level-3" id="id1">
+<h3>Features (cont)</h3>
+<ul class="simple">
+<li>Abstract runtime environment.</li>
+</ul>
+<ul class="build simple">
+<li>Test cases are portable across testbeds.</li>
+<li>Test cases are are reusable in different suites.</li>
+<li>General purpose controllers to interact with devices from tests, or tools.</li>
+<li>Test management and reporting.<ul>
+<li>Manage test coverage and risk</li>
+<li>Product quality dashboards</li>
+</ul>
+</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="design-philosophy">
+<h2>Design Philosophy</h2>
+<ul class="simple">
+<li>Modular, using Python package hierarchy.</li>
+<li>Re-usable test cases.<ul>
+<li>Use only abstract environment objects, not specific hardware.</li>
+<li>Environment objects hold necessary data in an intuitive way.</li>
+<li>Environment objects may be controlled via <em>controllers</em>, dynamically
+constructed on demand by the test.</li>
+<li>Small, single-purpose test case.</li>
+<li>Should be composable for different purposes.</li>
+<li>Dynamic suite constructions, run time selection of tests.</li>
+</ul>
+</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="id2">
+<h2>Design Philosophy</h2>
+<p>Test plan prose is also kept inside the test case code itself. It is the only
+test case documentation. Better chance of being accurate.</p>
+<p>End result are test cases that are small, simple, and easy to read and
+understand.</p>
+<p>Manual tests should also benefit from it, streamlining manual operations.</p>
+
+</article>
+<article class="slide level-3" id="test-outcomes">
+<h3>Test Outcomes</h3>
+<p>A test framework is also software, and may also have bugs.</p>
+<table border="1" class="docutils">
+<caption>Possible test run outcomes</caption>
+<colgroup>
+<col width="56%" />
+<col width="44%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Framework</th>
+<th class="head">Product</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Pass</td>
+<td>Pass</td>
+</tr>
+<tr class="row-odd"><td>Pass</td>
+<td>Fail</td>
+</tr>
+<tr class="row-even"><td>Fail</td>
+<td>Unknown</td>
+</tr>
+</tbody>
+</table>
+<p>Framework should not report a product failure if the test actually failed.</p>
+
+</article>
+<article class="slide level-2" id="test-framework-style">
+<h2>Test Framework style</h2>
+<p>To that end...</p>
+<ul class="build simple">
+<li><strong>Python</strong>: A modern, dynamic, object-oriented scripting language.</li>
+<li>Primarily an object-oriented framework design. Write test cases with
+inheritance.  However, may also write and run simple script modules.</li>
+<li>Leverage Python package hierarchy to organize test cases.</li>
+<li>Leverage Python code introspection to find, inspect and report on test
+cases.</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="id3">
+<h2>Test Framework style</h2>
+<ul class="build simple">
+<li>Leverage Python exception handling to get accurate results.</li>
+<li>Bail early on errors, don't continue if it doesn't make sense.</li>
+<li>Automatic, doesn't depend on explicit error checking by test writer.</li>
+<li>Package namespace, <em>testcases</em>, defined for all test cases. Sets of test
+cases may be deployed in modular packages.</li>
+</ul>
+
+</article>
+<article class="slide level-3" id="framework-test-results">
+<h3>Framework Test Results</h3>
+<ul class="simple">
+<li><strong>PASSED</strong>: test passed (criteria was met). A test case should
+positively determine this, with explicit verification.</li>
+<li><strong>FAILED</strong>: test failed (criteria was not met), but the suite can
+continue.</li>
+<li><strong>INCOMPLETE</strong>: test could not complete, and the pass/fail
+criteria could not be determined. but the suite may continue. May happen with
+the test itself fails for some reason.</li>
+<li><strong>ABORTED</strong>: test could not complete, and the suite cannot
+continue.</li>
+<li><strong>EXPECTED_FAIL</strong>: test is failing due to a bug, so is
+already known to fail. New runs shouldn't report as new failure.</li>
+</ul>
+
+</article>
+<article class="slide level-3" id="structure">
+<h3>Structure</h3>
+<p>Framework object model.</p>
+<img alt="blockdiag-179ba87846fa774d995733c65dc9042cca878697.png" src="blockdiag-179ba87846fa774d995733c65dc9042cca878697.png" />
+<ul class="simple">
+<li>Test cases (<tt class="docutils literal"><span class="pre">TestCase</span></tt> object) implement tests. One subclass per test case.</li>
+<li>Test suites (<tt class="docutils literal"><span class="pre">TestSuite</span></tt> object) contains a sequence of TestCase and
+handles running them in order, and also prerequisite checking.</li>
+<li>Use cases (<tt class="docutils literal"><span class="pre">UseCase</span></tt> object) construct suites at run time. They may inspect
+the runtime configuration and make adjustments to the suite at that time. Or,
+they may just hard-code a set of test cases.</li>
+</ul>
+
+</article>
+<article class="slide level-3" id="id4">
+<h3>Structure</h3>
+<ul class="simple">
+<li>A Python module may also act as a use case.</li>
+<li>A <tt class="docutils literal"><span class="pre">TestSuite</span></tt> is polymorphic with a test case, and may be nested. Thus a
+hierarchy of test cases may also be built up.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">&quot;UseCases&quot;
+&quot;TestSuites&quot;
+&quot;TestCases&quot;
+&quot;TestResults&quot;
+&quot;TestResultsData&quot;
+&quot;TestJobs&quot;</p>
+</div>
+
+</article>
+<article class="slide level-3" id="additional-objects">
+<h3>Additional Objects</h3>
+<p>Support objects include the <tt class="docutils literal"><span class="pre">TestRunner</span></tt>.</p>
+<ul class="simple">
+<li>It manages the environment construct and report instantiation.</li>
+<li>Runs the top-level test object.</li>
+<li>Takes input from the user that invokes the test (from command line
+arguments, for example) and provides them in the global configuration.</li>
+</ul>
+<p>This way the user can control what tests are run without having to edit any
+code or configuration files.</p>
+<p>Can select tests from a menu for ad-hoc testing.</p>
+
+</article>
+<article class="slide level-3" id="id5">
+<h3>Additional Objects</h3>
+<p>User interface objects can take input from the user at run time, for manual
+tests.</p>
+<p>Report objects produce the test run output. May send to console, save to file,
+or emailed. There is also a database table for test result records.</p>
+
+</article>
+<article class="slide level-3" id="test-case-workflow">
+<h3>Test Case Workflow</h3>
+<p>System supports development, test, review, and deploy workflow. Develop tests
+on a development host, package, then deploy on production host.
+This is optional. A broader code review process may also be used.</p>
+<img alt="actdiag-4e912ad2f9d2cce65396bdb1dc7a53a441cad6cb.png" src="actdiag-4e912ad2f9d2cce65396bdb1dc7a53a441cad6cb.png" />
+
+</article>
+<article class="slide level-3" id="but-wait-there-s-more">
+<h3>But wait, there's more!</h3>
+<blockquote>
+<div><ul class="simple">
+<li>Scalable deployment (single user to multi-user).</li>
+<li>Leverage more Python features and other open-source modules.</li>
+<li>New design makes it easier to add functionality.</li>
+<li>Easier to manage test cases and equipment.</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>Test runs emit signals when run.<ul>
+<li>Decouples test output from test cases.</li>
+<li>Extend reporting with custom listeners.</li>
+<li>Based on <a class="reference external" href="http://pythonhosted.org//blinker/">blinker</a> third-party module.</li>
+</ul>
+</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="database">
+<h2>Database</h2>
+<p>QA Framework contains integral database.
+Provides complete QA model.</p>
+<ul class="simple">
+<li>May be configured to use sqlite (small installations), or postgresql.</li>
+</ul>
+<p>New ORM layer:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Based on <a class="reference external" href="https://peewee.readthedocs.org/en/latest/#">peewee</a>: single module, smaller and simpler.</li>
+<li>Models can be used directly by advanced developers.</li>
+</ul>
+</div></blockquote>
+
+</article>
+<article class="slide level-3" id="contains">
+<h3>Contains</h3>
+<blockquote>
+<div><ul class="simple">
+<li>Lab equipment data</li>
+<li>Test case data</li>
+<li>Configuration</li>
+<li>Test bed (environment) associations and roles.</li>
+</ul>
+</div></blockquote>
+
+</article>
+<article class="slide level-3" id="benefits">
+<h3>Benefits</h3>
+<ul class="simple">
+<li>Persistent configuration</li>
+<li>Enables complex association modelling with foriegn keys.</li>
+<li>Managable by numerous user interfaces.</li>
+<li>Scalable - leverage databases's client-server model.</li>
+<li>Central, single source of &quot;truth&quot;.<ul>
+<li>Central knowledge base (no private spreadsheets)</li>
+<li>All Equipment information</li>
+<li>Generate various reports (test coverage to lab assets).</li>
+</ul>
+</li>
+</ul>
+
+</article>
+<article class="slide level-3" id="equipment-and-environments">
+<h3>Equipment and Environments</h3>
+<p>Lab equipment and environment grouping.</p>
+<ul>
+<li><p class="first">All knowledge about all lab equipment is stored.</p>
+</li>
+<li><p class="first">Interconnections are also modelled.</p>
+</li>
+<li><p class="first">Test cases may use this information to construct configurations.</p>
+</li>
+<li><p class="first">Users may use this information to understand topology and test scenarios.</p>
+</li>
+<li><p class="first">Extensible attribute system.</p>
+</li>
+<li><p class="first">Environments</p>
+<blockquote>
+<div><ul class="simple">
+<li>Equipment can take on one or more roles in one or more environments.</li>
+<li>Equipment can be grouped into an <em>environment</em>.</li>
+<li>Test runs target a particular environment.</li>
+<li>Special role is <em>DUT</em>, the device under test.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<img alt="blockdiag-705d623acd9c391c7cdc987063470e78576ec18e.png" src="blockdiag-705d623acd9c391c7cdc987063470e78576ec18e.png" />
+<div class="section level-4" id="manual-testing">
+<h4>Manual Testing</h4>
+<p>Supports more efficient manual testing. Resource reservation.</p>
+<p>Answer questions quickly, such as:</p>
+<blockquote>
+<div><ul class="simple">
+<li>What is the IP address of a device?</li>
+<li>What is the IP address of the console server?</li>
+<li>How do I log in?</li>
+<li>Where is it?</li>
+<li>Who do I contact when it breaks or needs updates?</li>
+<li>Who do I contact to use it?</li>
+</ul>
+</div></blockquote>
+<p>Manual test case code may also present info to the user from here.</p>
+</div><div class="section level-4" id="lab-maintenace">
+<h4>Lab maintenace</h4>
+<ul class="simple">
+<li>Faster and more effective equipment management<ul>
+<li>Warranty info</li>
+<li>Maintenance contracts</li>
+<li>Repair status</li>
+<li>RMA contact</li>
+</ul>
+</li>
+</ul>
+</div>
+</article>
+<article class="slide level-3" id="test-cases">
+<h3>Test Cases</h3>
+<p>Database holds information about test cases as well. Syncronized with code
+base. Also provides a means to construct static test suites using an
+interactive user interface.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">UseCase</span></tt> is just used to document the various use cases, for reporting.</li>
+<li><tt class="docutils literal"><span class="pre">TestSuites</span></tt> are containers of TestCases. May be used for static suites.</li>
+<li><tt class="docutils literal"><span class="pre">TestCases</span></tt> reference specs, procedures, and test results, for reporting.</li>
+</ul>
+<img alt="blockdiag-1dd0310bb640982bb53397119fbf8827bdc264fd.png" src="blockdiag-1dd0310bb640982bb53397119fbf8827bdc264fd.png" />
+<div class="section level-4" id="automated-automation">
+<h4>Automated Automation</h4>
+<ul class="simple">
+<li>A <tt class="docutils literal"><span class="pre">TestJobs</span></tt> collects a suite, environment, and configuration together for
+repeatable runs.</li>
+<li>A <tt class="docutils literal"><span class="pre">Schedule</span></tt> records schedules of <tt class="docutils literal"><span class="pre">TestJobs</span></tt> that is used to configure
+<tt class="docutils literal"><span class="pre">cron</span></tt> to run the jobs.</li>
+</ul>
+</div>
+</article>
+<article class="slide level-3" id="configuration">
+<h3>Configuration</h3>
+<p>General, persistent configuration items.</p>
+<ul class="simple">
+<li>Custom attributes may be attached to Equipment and Environments.</li>
+<li>Global configuration in a hierarchical structure.</li>
+</ul>
+
+</article>
+<article class="slide level-3" id="projects">
+<h3>Projects</h3>
+<p>Some support for project management and project information.</p>
+<ul class="simple">
+<li>Primarily used for managing test case coverage.<ul>
+<li>What functional areas are tested? Which are lacking?</li>
+</ul>
+</li>
+<li>Associate test cases with functional areas.</li>
+<li>Assign risk factors to help prioritize test production.</li>
+</ul>
+<img alt="blockdiag-188601b1e5f458977f2dff4ecd5a687f538cc2d5.png" src="blockdiag-188601b1e5f458977f2dff4ecd5a687f538cc2d5.png" />
+
+</article>
+<article class="slide level-2" id="example-test">
+<h2>Example Test</h2>
+<p>Here is how you would write a test case.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pycopia.QA</span> <span class="kn">import</span> <span class="n">core</span>
+
+<span class="k">class</span> <span class="nc">MyTestCase</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Purpose</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    Documentation, test plan is contained in the code.</span>
+<span class="sd">    ...</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">do_something_here</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">passed</span><span class="p">(</span><span class="s">&quot;The test meets the criteria&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">failed</span><span class="p">(</span><span class="s">&quot;The test did NOT meets the criteria&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+
+</article>
+<article class="slide level-3" id="test-module">
+<h3>Test Module</h3>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Simple implementations may be as simple as this.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">execute</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;You got me&quot;</span><span class="p">)</span>
+    <span class="n">info</span><span class="p">(</span><span class="s">&quot;same place&quot;</span><span class="p">)</span>
+    <span class="n">assertTrue</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">assertFalse</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">passed</span><span class="p">(</span><span class="s">&quot;Test passed&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And that's it.</p>
+
+</article>
+<article class="slide level-2" id="various-user-interfaces">
+<h2>Various User Interfaces</h2>
+<p>The tests and runner are decoupled from the console and user interface.</p>
+<ul class="simple">
+<li>Command line tools</li>
+<li>Terminal based front-end</li>
+<li>Web UI front end.</li>
+<li>Run automated job (e.g. from cron).</li>
+</ul>
+
+</article>
+<article class="slide level-2" id="questions">
+<h2>Questions?</h2>
+<p>Any questions?</p>
+<div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+
+</article>
+
+
+</section>
+
+<section id="slide_notes">
+
+</section>
+
+  </body>
+</html>
